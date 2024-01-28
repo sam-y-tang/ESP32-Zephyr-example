@@ -388,8 +388,13 @@ void thread_c_entry_point(void *dummy1, void *dummy2, void *dummy3)
 			continue;
 		}
 
-		printf("%d %6d %s [%d]: lat=%.6f, lon=%.6f, alt=%.1f Cel=%.1f RH=%.1f\n",
-			   pps_cycle, pps_cnt, now_str(), (int)utc_time, lat, lon, alt,
+		int utc = (int)utc_time;
+		int h = utc / 10000;
+		utc -= h * 10000;
+		int m = utc / 100;
+		int s = utc - m * 100;
+		printf("%d %6d %s [%02d:%02d:%02dZ] lat=%.6f, lon=%.6f, alt=%.1f Cel=%.1f RH=%.1f\n",
+			   pps_cycle, pps_cnt, now_str(), h, m, s, lat, lon, alt,
 			   sensor_value_to_double(&temperature),
 			   sensor_value_to_double(&humidity));
 		k_sleep(K_SECONDS(2));
